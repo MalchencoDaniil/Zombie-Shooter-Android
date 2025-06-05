@@ -10,11 +10,34 @@ public class InputHandler : MonoBehaviour
         Android
     }
 
-    public InputType currentType;
+    public InputType _currentType;
 
-    [ConditionalHide("currentType", InputType.Android)]
-    public Button _leftControlButtonUI;
+    private float _horizontalInput = 0f;
 
-    [ConditionalHide("currentType", InputType.Android)]
-    public Button _rightControlButtonUI;
+    private void Update()
+    {
+        _horizontalInput = 0f;
+
+        if (_currentType == InputType.Android)
+        {
+            HandleTouchInput();
+        }
+    }
+
+    private void HandleTouchInput()
+    {
+
+    }
+
+    public Vector2 MovementInput()
+    {
+        if (_currentType == InputType.PC)
+        {
+            return InputManager._instance._inputActions.Player.Movement.ReadValue<Vector2>();
+        }
+        else
+        {
+            return new Vector2(_horizontalInput, 0);
+        }
+    }
 }

@@ -59,36 +59,41 @@ public class ConditionalHidePropertyDrawer : PropertyDrawer
 
     private bool CheckCondition(ConditionalHideAttribute condHide, SerializedProperty sourcePropertyValue)
     {
-        bool _result = false;
+        if (sourcePropertyValue == null)
+        {
+            Debug.LogError("ConditionalHide: Could not find source property " + condHide.ConditionalSourceField);
+            return true; // Или false, в зависимости от логики
+        }
+
+        bool result = false;
 
         if (sourcePropertyValue.propertyType == SerializedPropertyType.Enum)
         {
-            int _enumValue = sourcePropertyValue.enumValueIndex;
-
-            if (condHide.CompareValue is InputHandler.InputType _compareEnumType)
+            int enumValue = sourcePropertyValue.enumValueIndex;
+            if (condHide.CompareValue is InputHandler.InputType compareEnumType)
             {
-                _result = _enumValue == (int)_compareEnumType;
+                result = enumValue == (int)compareEnumType; // Corrected to compare as integers
             }
             else if (condHide.CompareValue is string compareString)
             {
-                int _enumIndex = sourcePropertyValue.enumValueIndex;
-                string[] _enumNames = sourcePropertyValue.enumNames;
-
-                if (_enumIndex >= 0 && _enumIndex < _enumNames.Length)
+                int enumIndex = sourcePropertyValue.enumValueIndex;
+                string[] enumNames = sourcePropertyValue.enumNames;
+                if (enumIndex >= 0 && enumIndex < enumNames.Length)
                 {
-                    _result = _enumNames[_enumIndex] == compareString;
+                    result = enumNames[enumIndex] == compareString;
                 }
             }
         }
         else if (sourcePropertyValue.propertyType == SerializedPropertyType.Boolean)
         {
-            _result = sourcePropertyValue.boolValue;
+            result = sourcePropertyValue.boolValue;
         }
         else
         {
-            _result = true;
+            Debug.LogWarning("ConditionalHide: Unsupported property type for conditional source field " + condHide.ConditionalSourceField + ". Supported types are Enum and Boolean.");
+            result = true; // Или false, в зависимости от логики. По умолчанию показываем, если тип не поддерживается.
         }
 
-        return condHide.Inverse ? !_result : _result;
+        return condHide.Inverse ? !result : result;
     }
 }
