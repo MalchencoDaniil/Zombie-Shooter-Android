@@ -10,7 +10,7 @@ public class InputHandler : MonoBehaviour
         Android
     }
 
-    public InputType _currentType;
+    public InputType currentType;
 
     private float _horizontalInput = 0f;
 
@@ -18,7 +18,7 @@ public class InputHandler : MonoBehaviour
     {
         _horizontalInput = 0f;
 
-        if (_currentType == InputType.Android)
+        if (currentType == InputType.Android)
         {
             HandleTouchInput();
         }
@@ -31,7 +31,7 @@ public class InputHandler : MonoBehaviour
 
     public Vector2 MovementInput()
     {
-        if (_currentType == InputType.PC)
+        if (currentType == InputType.PC)
         {
             return InputManager._instance._inputActions.Player.Movement.ReadValue<Vector2>();
         }

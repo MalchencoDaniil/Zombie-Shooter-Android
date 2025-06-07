@@ -4,5 +4,5 @@ public class TagDictionary
 {
     // Unity Editor tags in code
 
-    public static string _enemy = "Enemy";
+    public static string enemy = "Enemy";
 }
