@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletSpeed: 7
   _damage: 1
-  _reloadTime: 0.5
+  _reloadTime: 0.7

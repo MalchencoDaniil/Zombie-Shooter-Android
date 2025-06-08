@@ -44,7 +44,7 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (!_other.gameObject.GetComponent<Player>())
+        if (_other.gameObject.tag != TagDictionary.player)
             Destroy(gameObject);
     }
 }

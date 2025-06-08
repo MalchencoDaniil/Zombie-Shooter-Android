@@ -1,16 +1,8 @@
 using UnityEngine;
 
-public enum LimitSide
-{
-    Left, 
-    Right,
-    None
-}
-
-[RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
-    private CharacterController _characterController;
+    private CrowdSystem _crowdSystem;
 
     [Header("References")]
     [SerializeField]
@@ -20,66 +12,23 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _movementSpeed = 5;
 
-    [Header("Horizontal Limits")]
     [SerializeField]
-    private float _horizontalLimit = 5f;
-    private Vector3 _startPosition;
-
-    internal Vector3 movementDirection;
-
-    [HideInInspector]
-    public LimitSide limitSide = LimitSide.None;
-
-    private void Awake()
-    {
-        _characterController = GetComponent<CharacterController>();
-    }
+    private float _horizontalLimit = 5;
 
     private void Start()
     {
-        _startPosition = transform.position;
+        _crowdSystem = GetComponent<CrowdSystem>();
     }
 
     private void Update()
     {
-        float horizontalInput = _inputHandler.MovementInput().x;
+        float _horizontalInput = _inputHandler.MovementInput().x;
+        float crowdRadius = _crowdSystem.GetCrowdDistance();
 
-        Vector3 desiredMovement = transform.right * horizontalInput * _movementSpeed * Time.deltaTime;
-        Vector3 newPosition = transform.position + desiredMovement;
+        float targetX = transform.position.x + _horizontalInput * _movementSpeed * Time.deltaTime;
 
-        float distance = newPosition.x - _startPosition.x;
+        targetX = Mathf.Clamp(targetX, -_horizontalLimit / 2f + crowdRadius, _horizontalLimit / 2f - crowdRadius);
 
-        if (Mathf.Abs(distance) > _horizontalLimit)
-        {
-            float limitedX = _startPosition.x + Mathf.Sign(distance) * _horizontalLimit;
-            newPosition.x = limitedX;
-            desiredMovement = newPosition - transform.position;
-        }
-
-        movementDirection = desiredMovement;
-
-        if (limitSide == LimitSide.None)
-            _characterController.Move(movementDirection);
-
-        if (horizontalInput > 0 && limitSide == LimitSide.Left)
-        {
-            _characterController.Move(movementDirection);
-            limitSide = LimitSide.None;
-        }
-
-        if (horizontalInput < 0 && limitSide == LimitSide.Right)
-        {
-            _characterController.Move(movementDirection);
-            limitSide = LimitSide.None;
-        }
-    }
-
-    public float GetHorizontalLimit()
-    {
-        return _horizontalLimit;
-    }
-    public Vector3 GetStartPosition()
-    {
-        return _startPosition;
+        transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
     }
 }

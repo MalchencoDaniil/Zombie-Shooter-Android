@@ -3,9 +3,8 @@ using TMPro;
 
 public class ObstaclePlayerSpawner : Obstacle
 {
-    private Shoot _shootController;
     private PlayerManager _playerManager;
-
+    private Shoot _shootController;
 
     [Header("References")]
     [SerializeField]
@@ -51,15 +50,16 @@ public class ObstaclePlayerSpawner : Obstacle
 
     private void OnTriggerEnter(Collider _other)
     {
-        if (_other.gameObject.GetComponent<Player>() || _other.gameObject.GetComponent<PlayerFollower>())
+        if (_other.gameObject.tag == TagDictionary.player)
         {
             if (_health < 0)
             {
+                Destroy(_other.gameObject);
                 Destroy(gameObject);
             }
             if (_health >= 0)
             {
-                //_playerManager.SpawnFollowers(_health);
+                _playerManager.AddPlayer(_health);
                 Destroy(gameObject);
             }
         }
