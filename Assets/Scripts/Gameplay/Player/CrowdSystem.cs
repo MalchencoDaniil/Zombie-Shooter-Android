@@ -64,13 +64,11 @@ public class CrowdSystem : MonoBehaviour
 
     private void LateUpdate()
     {
-        PlaceRunner();
-
         if (_playerManager._playerMeshes.Count > 0)
             _cameraTargetPoint.position = Centroid();
     }
 
-    private void PlaceRunner()
+    public void PlaceRunner()
     {
         if (_playerManager._playerMeshes.Count == 0) return;
 
