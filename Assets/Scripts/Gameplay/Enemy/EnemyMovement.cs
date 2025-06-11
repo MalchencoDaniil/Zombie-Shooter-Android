@@ -27,7 +27,6 @@ public class EnemyMovement : MonoBehaviour
         if (_other.gameObject.tag == TagDictionary.player)
         {
             _playerManager.RemovePlayer(_other.transform);
-            Destroy(gameObject);
         }
     }
 }
