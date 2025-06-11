@@ -23,12 +23,12 @@ public class Player : MonoBehaviour
     private void Update()
     {
         float _horizontalInput = _inputHandler.MovementInput().x;
-        float crowdRadius = _crowdSystem.GetCrowdDistance();
+        float _crowdRadius = Mathf.Max(0, _crowdSystem.GetCrowdDistance());
 
-        float targetX = transform.position.x + _horizontalInput * _movementSpeed * Time.deltaTime;
+        float _targetX = transform.position.x + _horizontalInput * _movementSpeed * Time.deltaTime;
 
-        targetX = Mathf.Clamp(targetX, -_horizontalLimit / 2f + crowdRadius, _horizontalLimit / 2f - crowdRadius);
+        _targetX = Mathf.Clamp(_targetX, -_horizontalLimit / 2f + _crowdRadius, _horizontalLimit / 2f - _crowdRadius);
 
-        transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
+        transform.position = new Vector3(_targetX, transform.position.y, transform.position.z);
     }
 }

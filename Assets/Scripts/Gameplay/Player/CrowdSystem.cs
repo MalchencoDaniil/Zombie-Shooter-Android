@@ -30,18 +30,12 @@ public class CrowdSystem : MonoBehaviour
 
     public float GetCrowdDistance()
     {
-        Vector3 _crowdCenter = GetCrowdCenter();
+        float _halfWidth = (_numCols - 1) / 2f * _colDistance;
+        float _depth = (_numRows - 1) * _rowDistance + _behindDistance;
 
-        float _maxDistance = 0;
-
-        foreach (Transform playerMesh in _playerManager._playerMeshes)
-        {
-            float distance = Vector3.Distance(_crowdCenter, playerMesh.localPosition);
-            _maxDistance = Mathf.Max(_maxDistance, distance);
-        }
-
-        return _maxDistance;
+        return Mathf.Sqrt(_halfWidth * _halfWidth + _depth * _depth);
     }
+
 
     public Vector3 GetCrowdCenter()
     {
