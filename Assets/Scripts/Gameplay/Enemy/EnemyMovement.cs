@@ -7,9 +7,15 @@ public class EnemyMovement : MonoBehaviour
 
     private PlayerManager _playerManager;
 
+    [SerializeField]
+    private bool _canDestroyPlayer = true;
+
     [SerializeField] private float _movementSpeed = 5;
 
     [SerializeField] private Vector3 _movementDirection;
+
+    public float MovementSpeed => _movementSpeed;
+    public Vector3 MovementDirection => _movementDirection;
 
     private void Start()
     {
@@ -24,7 +30,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider _other)
     {
-        if (_other.gameObject.tag == TagDictionary.player)
+        if (_other.gameObject.tag == TagDictionary.player && _canDestroyPlayer)
         {
             _playerManager.RemovePlayer(_other.transform);
         }

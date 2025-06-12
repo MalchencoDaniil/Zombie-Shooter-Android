@@ -37,9 +37,9 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (_other.gameObject.GetComponent<ObstaclePlayerSpawner>())
+        if (_other.gameObject.GetComponent<Obstacle>())
         {
-            ObstaclePlayerSpawner _obstacleSpawner = _other.gameObject.GetComponent<ObstaclePlayerSpawner>();
+            Obstacle _obstacleSpawner = _other.gameObject.GetComponent<Obstacle>();
             _obstacleSpawner.AddHealth();
             Destroy(gameObject);
         }

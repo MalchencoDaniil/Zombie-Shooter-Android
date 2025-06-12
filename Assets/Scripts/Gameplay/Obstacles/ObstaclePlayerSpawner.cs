@@ -20,10 +20,6 @@ public class ObstaclePlayerSpawner : Obstacle
     [SerializeField]
     private Material _takeMaterial;
 
-    [Header("Obstacle Settings")]
-    [SerializeField]
-    private int _health = -5;
-
     private void Start()
     {
         _playerManager = FindObjectOfType<PlayerManager>();
@@ -31,20 +27,19 @@ public class ObstaclePlayerSpawner : Obstacle
 
         _healthText.text = _health.ToString();
 
-        _mesh.material = _baseMaterial;
+        if (_health >= 0)
+        {
+            if (_health == 0)
+                _mesh.material = _takeMaterial;
+        }
     }
 
-    public override void Interact()
+    public override void AddHealth()
     {
-
-    }
-
-    public void AddHealth()
-    {
-        _health += (int)_shootController.gun.Damage;
+        _health += (int)_shootController._gun.Damage;
         _healthText.text = _health > 0 ? '+' + _health.ToString() : _health.ToString();
 
-        if (_health == 0)
+        if (_health >= 0)
             _mesh.material = _takeMaterial;
     }
 
@@ -54,7 +49,7 @@ public class ObstaclePlayerSpawner : Obstacle
         {
             if (_health < 0)
             {
-                Destroy(_other.gameObject);
+                _playerManager.RemovePlayer(_other.transform);
                 Destroy(gameObject);
             }
             if (_health >= 0)

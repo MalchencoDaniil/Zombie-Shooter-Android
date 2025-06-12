@@ -1,13 +1,13 @@
 using UnityEngine;
-
 public class Shoot : MonoBehaviour
 {
     private float _timeToBulletShots = 0;
 
-    [Header("References")]
-    [SerializeField]
-    internal Gun gun;
+    internal Gun _gun;
 
+    private PlayerManager _playerManager;
+
+    [Header("References")]
     [SerializeField]
     private Transform _shootPosition;
 
@@ -23,7 +23,10 @@ public class Shoot : MonoBehaviour
 
     private void Start()
     {
-        _reloadTime = gun.ReloadTime;
+        _playerManager = FindObjectOfType<PlayerManager>();
+        _gun = _playerManager.PlayerGun;
+
+        _reloadTime = _gun.ReloadTime;
     }
 
     private void Update()
@@ -33,7 +36,7 @@ public class Shoot : MonoBehaviour
         if (_timeToBulletShots <= 0)
         {
             Bullet _newBullet = Instantiate(_bullet, _shootPosition.position, Quaternion.identity);
-            _newBullet.Initialize(gun.BulletSpeed, (int)gun.Damage);
+            _newBullet.Initialize(_gun.BulletSpeed, (int)_gun.Damage);
 
             _timeToBulletShots = _reloadTime;
         }

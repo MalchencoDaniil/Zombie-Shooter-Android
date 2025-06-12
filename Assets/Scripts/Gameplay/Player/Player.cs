@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
     private void Start()
     {
         _crowdSystem = GetComponent<CrowdSystem>();
+
+        if (_inputHandler == null)
+            _inputHandler = FindObjectOfType<InputHandler>();
     }
 
     private void Update()
